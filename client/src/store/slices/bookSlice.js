@@ -68,7 +68,7 @@ const bookSlice = createSlice({
 
 export const fetchAllBooks = () => async(dispatch) => {
     dispatch(bookSlice.actions.fetchBooksRequest());
-    await axios.get("http://localhost:4000/api/v1/books/allbooks", {
+    await axios.get("https://library-management-system-zn3r.vercel.app/api/v1/books/allbooks", {
         withCredentials: true
     }).then((res) => {
         dispatch(bookSlice.actions.fetchBooksSuccess(res.data.books));
@@ -79,7 +79,7 @@ export const fetchAllBooks = () => async(dispatch) => {
 
 export const addBook = (data) => async(dispatch) => {
     dispatch(bookSlice.actions.addBookRequest());
-    await axios.post("http://localhost:4000/api/v1/books/admin/addbook", data, {
+    await axios.post("https://library-management-system-zn3r.vercel.app/api/v1/books/admin/addbook", data, {
         withCredentials: true,
         header:{
             "Content-Type" : "application/json"
@@ -96,7 +96,7 @@ export const addBook = (data) => async(dispatch) => {
 
 export const deleteBook = (bookId) => async(dispatch) => {
     dispatch(bookSlice.actions.deleteBookRequest());
-    await axios.delete(`http://localhost:4000/api/v1/books/admin/deletebook/${bookId}`, {
+    await axios.delete(`https://library-management-system-zn3r.vercel.app/api/v1/books/admin/deletebook/${bookId}`, {
         withCredentials: true,
     }).then((res) => {
         dispatch(bookSlice.actions.deleteBookSuccess(res.data.message));
