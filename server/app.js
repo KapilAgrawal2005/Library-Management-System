@@ -14,7 +14,7 @@ const { notifyUsers } = require("./services/notifyUsers");
 const { removeUnverifiedAccounts } = require("./services/removeUnverifiedAccounts");
 
 app.use(cors({
-    origin: [process.env.FRONTEND_URL],
+    origin: "https://library-management-system-pearl-kappa.vercel.app",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
 }));
