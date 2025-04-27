@@ -28,7 +28,7 @@ app.use(fileUpload({
 }))
 
 app.use("/api/v1/auth", authRouter);
-app.use("/api/v1/books", bookRouter);
+app.use("/api/v1/books/", bookRouter);
 app.use("/api/v1/borrow", borrowRouter);
 app.use("/api/v1/user", userRouter);
 
