@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || 'https://library-management-system-zn3r.vercel.app',
+    baseURL: 'https://library-management-system-zn3r.vercel.app',
     withCredentials: true,
     headers: {
         'Content-Type': 'application/json',
@@ -18,6 +18,7 @@ api.interceptors.request.use(
         return config;
     },
     (error) => {
+        console.error('Request error:', error);
         return Promise.reject(error);
     }
 );
@@ -26,9 +27,12 @@ api.interceptors.request.use(
 api.interceptors.response.use(
     (response) => response,
     async (error) => {
+        console.error('Response error:', error);
         if (error.response?.status === 401) {
             localStorage.removeItem('token');
             window.location.href = '/login';
+        } else if (error.response?.status === 404) {
+            console.error('Resource not found:', error.config.url);
         }
         return Promise.reject(error);
     }
