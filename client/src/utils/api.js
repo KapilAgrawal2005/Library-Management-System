@@ -11,7 +11,8 @@ const api = axios.create({
 // Add a request interceptor
 api.interceptors.request.use(
     (config) => {
-        // Remove token from localStorage handling since we're using cookies
+        // Ensure credentials are included
+        config.withCredentials = true;
         return config;
     },
     (error) => {
@@ -26,10 +27,16 @@ api.interceptors.response.use(
     async (error) => {
         console.error('Response error:', error);
         if (error.response?.status === 401) {
-            // Remove token handling since we're using cookies
+            // Redirect to login on authentication error
             window.location.href = '/login';
         } else if (error.response?.status === 404) {
             console.error('Resource not found:', error.config.url);
+        } else if (error.response?.status === 400) {
+            console.error('Bad request:', error.response.data);
+            // If it's an authentication error, redirect to login
+            if (error.response.data.message?.includes('not authenticated')) {
+                window.location.href = '/login';
+            }
         }
         return Promise.reject(error);
     }
