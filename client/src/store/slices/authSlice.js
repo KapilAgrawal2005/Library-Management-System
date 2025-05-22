@@ -187,7 +187,7 @@ export const otpVerification = (email, otp) => async(dispatch) =>{
 
 export const login = (data) => async(dispatch) =>{
     dispatch(authSlice.actions.loginRequest());
-    await axios.post("https://library-management-system-eight-sandy.vercel.app/login", data, {
+    await axios.post("https://library-management-system-eight-sandy.vercel.app/api/v1/auth/login", data, {
         withCredentials: true,
         headers: {
             "Content-Type" : "application/json"

@@ -23,7 +23,7 @@ const signup = catchAsyncErrors(async(req, res, next)=>{
         }
 
         const signupAttempts = await User.find({email, accountVerified: false});
-        if(signupAttempts>=5){
+        if(signupAttempts.length >= 5){
             return next(new ErrorHandler("Too many attempts. Please try again later.", 400));
         }
 
@@ -35,17 +35,24 @@ const signup = catchAsyncErrors(async(req, res, next)=>{
         const user = await User.create({
             name,
             email,
-            password : hashedPassword,
+            password: hashedPassword,
         });
 
         const otp = await user.generateOTP();
-
         await user.save();
 
-        sendOTP(otp, email, res);
+        try {
+            await sendOTP(otp, email, res);
+        } catch (emailError) {
+            console.error('Error sending OTP:', emailError);
+            // If email fails, delete the user and return error
+            await User.findByIdAndDelete(user._id);
+            return next(new ErrorHandler("Failed to send OTP. Please try again.", 500));
+        }
 
-    }catch(error){
-        return next(new ErrorHandler("Internal server error.",500));
+    } catch(error) {
+        console.error('Signup error:', error);
+        return next(new ErrorHandler(error.message || "Internal server error.", 500));
     }
 });
 
