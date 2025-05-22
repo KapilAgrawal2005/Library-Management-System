@@ -11,10 +11,7 @@ const api = axios.create({
 // Add a request interceptor
 api.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
-        }
+        // Remove token from localStorage handling since we're using cookies
         return config;
     },
     (error) => {
@@ -29,7 +26,7 @@ api.interceptors.response.use(
     async (error) => {
         console.error('Response error:', error);
         if (error.response?.status === 401) {
-            localStorage.removeItem('token');
+            // Remove token handling since we're using cookies
             window.location.href = '/login';
         } else if (error.response?.status === 404) {
             console.error('Resource not found:', error.config.url);
