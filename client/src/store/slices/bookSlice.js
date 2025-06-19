@@ -3,7 +3,7 @@ import { toggleAddBookPopup } from "./popupSlice";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const serverUrl = "https://library-management-system-eight-sandy.vercel.app";
+const serverUrl = import.meta.env.VITE_SERVER_URL;
 const bookSlice = createSlice({
   name: "book",
   initialState: {

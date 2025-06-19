@@ -3,7 +3,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { toggleAddNewAdminPopup } from "./popupSlice";
 
-const serverUrl = "https://library-management-system-eight-sandy.vercel.app";
+const serverUrl = import.meta.env.VITE_SERVER_URL;
 
 const userSlice = createSlice({
   name: "user",

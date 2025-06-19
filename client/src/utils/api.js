@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const serverUrl = "https://library-management-system-zn3r.vercel.app";
+const serverUrl = import.meta.env.VITE_SERVER_URL;
 
 const api = axios.create({
   baseURL: serverUrl,

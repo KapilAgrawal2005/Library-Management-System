@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { toggleSettingPopup } from "./popupSlice";
 
-const serverUrl = "https://library-management-system-eight-sandy.vercel.app";
+const serverUrl = import.meta.env.VITE_SERVER_URL;
 
 const authSlice = createSlice({
   name: "auth",

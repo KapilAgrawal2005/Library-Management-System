@@ -14,7 +14,7 @@ const { notifyUsers } = require("./services/notifyUsers");
 const { removeUnverifiedAccounts } = require("./services/removeUnverifiedAccounts");
 
 app.use(cors({
-    origin: "https://library-management-system-nbyy.vercel.app",
+    origin: process.env.FRONTEND_URL,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"]
