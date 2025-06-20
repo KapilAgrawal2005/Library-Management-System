@@ -42,12 +42,8 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen, setSelectedComponent }) => {
     if (message) {
       toast.success(message);
       dispatch(resetAuthSlice());
-      // If logout was successful, navigate to home page
-      if (message.includes("logged out successfully")) {
-        navigate("/");
-      }
     }
-  }, [dispatch, navigate, isAuthenticated, loading, error, message]);
+  }, [dispatch, isAuthenticated, loading, error, message]);
 
   return (
     <div>

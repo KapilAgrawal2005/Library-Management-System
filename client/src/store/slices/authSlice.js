@@ -210,17 +210,19 @@ export const login = (data) => async (dispatch) => {
 
 export const logout = () => async (dispatch) => {
   dispatch(authSlice.actions.logoutRequest());
-  await axios
-    .get(`${serverUrl}/api/v1/auth/logout`, {
+  try {
+    const response = await axios.get(`${serverUrl}/api/v1/auth/logout`, {
       withCredentials: true,
-    })
-    .then((res) => {
-      dispatch(authSlice.actions.logoutSuccess(res.data.message));
-      dispatch(authSlice.actions.resetAuthSlice());
-    })
-    .catch((error) => {
-      dispatch(authSlice.actions.logoutFailed(error.response.data.message));
     });
+    dispatch(authSlice.actions.logoutSuccess(response.data.message));
+    dispatch(authSlice.actions.resetAuthSlice());
+  } catch (error) {
+    dispatch(
+      authSlice.actions.logoutFailed(
+        error.response?.data?.message || "Logout failed"
+      )
+    );
+  }
 };
 
 export const getUser = () => async (dispatch) => {
