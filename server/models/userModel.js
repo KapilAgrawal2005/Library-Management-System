@@ -78,9 +78,27 @@ userSchema.methods.generateOTP = function () {
 };
 
 userSchema.methods.generateToken = function () {
-  return jwt.sign({ id: this._id }, process.env.JWT_SECRET_KEY, {
-    expiresIn: process.env.JWT_EXPIRE,
-  });
+  try {
+    console.log("=== GENERATE TOKEN START ===");
+    console.log("User ID for token:", this._id);
+    console.log("JWT_SECRET_KEY exists:", !!process.env.JWT_SECRET_KEY);
+    console.log("JWT_EXPIRE:", process.env.JWT_EXPIRE);
+
+    const token = jwt.sign({ id: this._id }, process.env.JWT_SECRET_KEY, {
+      expiresIn: process.env.JWT_EXPIRE,
+    });
+
+    console.log("Token generated successfully");
+    console.log("=== GENERATE TOKEN END ===");
+    return token;
+  } catch (error) {
+    console.error("Token generation error:", {
+      message: error.message,
+      stack: error.stack,
+      name: error.name,
+    });
+    throw error;
+  }
 };
 
 userSchema.methods.getResetPasswordToken = function () {
