@@ -15,6 +15,13 @@ api.interceptors.request.use(
   (config) => {
     // Ensure credentials are included
     config.withCredentials = true;
+
+    // Get token from localStorage and add to Authorization header
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
     return config;
   },
   (error) => {
