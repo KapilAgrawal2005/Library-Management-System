@@ -17,16 +17,7 @@ const isAuthenticated = catchAsyncErrors(async (req, res, next) => {
     token = req.headers.authorization.split(" ")[1];
   }
 
-  // Debug logging
-  console.log("Auth middleware - Cookies received:", Object.keys(req.cookies));
-  console.log(
-    "Auth middleware - Authorization header:",
-    !!req.headers.authorization
-  );
-  console.log("Auth middleware - Token present:", !!token);
-
   if (!token) {
-    console.log("Auth middleware - No token found in cookies or headers");
     return next(new ErrorHandler("Please login to access this resource.", 401));
   }
 
@@ -35,18 +26,12 @@ const isAuthenticated = catchAsyncErrors(async (req, res, next) => {
     const user = await User.findById(decode.id);
 
     if (!user) {
-      console.log("Auth middleware - User not found for token");
       return next(new ErrorHandler("User not found.", 401));
     }
 
-    console.log(
-      "Auth middleware - Authentication successful for user:",
-      user._id
-    );
     req.user = user;
     next();
   } catch (error) {
-    console.log("Auth middleware - Token verification failed:", error.message);
     return next(
       new ErrorHandler("Invalid or expired token. Please login again.", 401)
     );
