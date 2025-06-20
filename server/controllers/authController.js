@@ -106,51 +106,31 @@ const verifyOTP = catchAsyncErrors(async (req, res, next) => {
 });
 
 const login = catchAsyncErrors(async (req, res, next) => {
-  console.log("=== LOGIN ATTEMPT START ===");
-  console.log("Request body:", req.body);
-
   const { email, password } = req.body;
-  console.log("Extracted email:", email);
-  console.log("Password provided:", !!password);
 
   if (!email || !password) {
-    console.log("Missing email or password");
     return next(new ErrorHandler("All fields are required.", 400));
   }
 
   try {
-    console.log("Searching for user in database...");
     const user = await User.findOne({ email, accountVerified: true }).select(
       "+password"
     );
-    console.log("User found:", !!user);
 
     if (!user) {
-      console.log("User not found for email:", email);
       return next(new ErrorHandler("User doesn't exist.", 400));
     }
 
-    console.log("Comparing passwords...");
     const isPasswordMatched = await bcrypt.compare(password, user.password);
-    console.log("Password match result:", isPasswordMatched);
 
     if (!isPasswordMatched) {
-      console.log("Password mismatch");
       return next(new ErrorHandler("Password is incorrect", 400));
     }
 
-    console.log("Calling sendToken...");
     sendToken(user, "User logged in successfully.", res);
-    console.log("=== LOGIN ATTEMPT END ===");
   } catch (error) {
-    console.error("Login error details:", {
-      message: error.message,
-      stack: error.stack,
-      name: error.name,
-    });
-    return next(
-      new ErrorHandler(`Internal server error: ${error.message}`, 500)
-    );
+    console.error("Login error:", error);
+    return next(new ErrorHandler("Internal server error.", 500));
   }
 });
 
