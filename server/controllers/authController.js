@@ -135,16 +135,17 @@ const login = catchAsyncErrors(async (req, res, next) => {
 });
 
 const logout = catchAsyncErrors(async (req, res, next) => {
-  res
-    .status(200)
-    .cookie("token", "", {
-      expires: new Date(Date.now()),
-      httpOnly: true,
-    })
-    .json({
-      success: true,
-      message: "User logged out successfully",
-    });
+  const cookieOptions = {
+    expires: new Date(Date.now()),
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  };
+
+  res.status(200).cookie("token", "", cookieOptions).json({
+    success: true,
+    message: "User logged out successfully",
+  });
 });
 
 const getUser = catchAsyncErrors(async (req, res, next) => {
