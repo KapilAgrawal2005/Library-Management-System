@@ -107,7 +107,6 @@ const verifyOTP = catchAsyncErrors(async (req, res, next) => {
 
 const login = catchAsyncErrors(async (req, res, next) => {
   const { email, password } = req.body;
-
   if (!email || !password) {
     return next(new ErrorHandler("All fields are required.", 400));
   }
@@ -128,24 +127,21 @@ const login = catchAsyncErrors(async (req, res, next) => {
 
     sendToken(user, "User logged in successfully.", res);
   } catch (error) {
-    console.error("Login error:", error);
     return next(new ErrorHandler("Internal server error.", 500));
   }
 });
 
 const logout = catchAsyncErrors(async (req, res, next) => {
-  // Cookie options for cross-site requests (same as sendToken)
-  const cookieOptions = {
-    expires: new Date(Date.now()),
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-  };
-
-  res.status(200).cookie("token", "", cookieOptions).json({
-    success: true,
-    message: "User logged out successfully",
-  });
+  res
+    .status(200)
+    .cookie("token", "", {
+      expires: new Date(Date.now()),
+      httpOnly: true,
+    })
+    .json({
+      success: true,
+      message: "User logged out successfully",
+    });
 });
 
 const getUser = catchAsyncErrors(async (req, res, next) => {

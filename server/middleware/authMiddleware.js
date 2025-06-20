@@ -5,16 +5,7 @@ const User = require("../models/userModel");
 require("dotenv").config();
 
 const isAuthenticated = catchAsyncErrors(async (req, res, next) => {
-  // Try to get token from cookies first, then from Authorization header
-  let token = req.cookies.token;
-
-  if (!token && req.headers.authorization) {
-    // Check for Bearer token in Authorization header
-    const authHeader = req.headers.authorization;
-    if (authHeader.startsWith("Bearer ")) {
-      token = authHeader.substring(7);
-    }
-  }
+  const { token } = req.cookies;
 
   if (!token) {
     return next(new ErrorHandler("Please login to access this resource.", 401));

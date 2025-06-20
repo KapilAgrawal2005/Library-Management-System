@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import logo_with_title from "../assets/logo-with-title.png";
 import logoutIcon from "../assets/logout.png";
 import closeIcon from "../assets/white-close-icon.png";
@@ -21,6 +22,7 @@ import SettingPopup from "../popups/SettingPopup";
 
 const Sidebar = ({ isSidebarOpen, setSidebarOpen, setSelectedComponent }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { addNewAdminPopup, settingPopup } = useSelector(
     (state) => state.popup
   );
@@ -40,8 +42,12 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen, setSelectedComponent }) => {
     if (message) {
       toast.success(message);
       dispatch(resetAuthSlice());
+      // If logout was successful, navigate to home page
+      if (message.includes("logged out successfully")) {
+        navigate("/");
+      }
     }
-  }, [dispatch, isAuthenticated, loading, error, message]);
+  }, [dispatch, navigate, isAuthenticated, loading, error, message]);
 
   return (
     <div>

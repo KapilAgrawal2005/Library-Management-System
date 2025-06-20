@@ -38,10 +38,6 @@ const authSlice = createSlice({
       state.message = action.payload.message;
       state.isAuthenticated = true;
       state.user = action.payload.user;
-      // Store token in localStorage as fallback
-      if (action.payload.token) {
-        localStorage.setItem("token", action.payload.token);
-      }
     },
     otpVerificationFailed(state, action) {
       state.loading = false;
@@ -58,10 +54,6 @@ const authSlice = createSlice({
       state.message = action.payload.message;
       state.isAuthenticated = true;
       state.user = action.payload.user;
-      // Store token in localStorage as fallback
-      if (action.payload.token) {
-        localStorage.setItem("token", action.payload.token);
-      }
     },
     loginFailed(state, action) {
       state.loading = false;
@@ -78,8 +70,6 @@ const authSlice = createSlice({
       state.message = action.payload;
       state.isAuthenticated = false;
       state.user = null;
-      // Clear token from localStorage
-      localStorage.removeItem("token");
     },
     logoutFailed(state, action) {
       state.loading = false;
