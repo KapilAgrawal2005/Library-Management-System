@@ -16,9 +16,10 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    const data = new FormData();
-    data.append("email", email);
-    data.append("password", password);
+    const data = {
+      email,
+      password,
+    };
     dispatch(login(data));
   };
 
