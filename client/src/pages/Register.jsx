@@ -45,7 +45,29 @@ const Register = () => {
   return (
     <>
       <div className="flex flex-col justify-center md:flex-row h-screen">
-        {/* left side - Form */}
+        {/* left side - Promotional Content */}
+        <div className="hidden w-full md:w-1/2 bg-black text-white md:flex flex-col items-center justify-center p-8 rounded-tl-[80px] rounded-bl-[80px]">
+          <div className="text-center h-[400px]">
+            <div className="flex justify-center mb-12">
+              <img
+                src={logo_with_title}
+                alt="logo"
+                className="mb-12 h-44 w-auto"
+              />
+            </div>
+            <p className="text-gray-300 mb-12">
+              Already have an Account? Sign in now.
+            </p>
+            <Link
+              to={"/login"}
+              className="border-2 mt-5 border-white px-8 bg-black text-white w-full font-semibold py-2 rounded-lg hover:text-black hover:bg-white hover:cursor-pointer"
+            >
+              SIGN IN
+            </Link>
+          </div>
+        </div>
+
+        {/* right side - Form */}
         <div className="w-full md:w-1/2 flex items-center justify-center bg-white p-8 relative">
           <div className="max-w-sm w-full">
             <div className="flex justify-center mb-12">
@@ -56,7 +78,7 @@ const Register = () => {
             <h1 className="text-4xl font-medium text-center mb-12 overflow-hidden">
               Sign Up
             </h1>
-            <p className="text-gray-800 text-center mb-12">
+            <p className="text-gray-800 text-center mb-10">
               Please provide your information to Sign up.
             </p>
 
@@ -114,28 +136,6 @@ const Register = () => {
                 {loading ? "Creating Account..." : "SIGN UP"}
               </button>
             </form>
-          </div>
-        </div>
-
-        {/* right side - Promotional Content */}
-        <div className="hidden w-full md:w-1/2 bg-black text-white md:flex flex-col items-center justify-center p-8 rounded-tl-[80px] rounded-bl-[80px]">
-          <div className="text-center h-[400px]">
-            <div className="flex justify-center mb-12">
-              <img
-                src={logo_with_title}
-                alt="logo"
-                className="mb-12 h-44 w-auto"
-              />
-            </div>
-            <p className="text-gray-300 mb-12">
-              Already have an Account? Sign in now.
-            </p>
-            <Link
-              to={"/login"}
-              className="border-2 mt-5 border-white px-8 bg-black text-white w-full font-semibold py-2 rounded-lg hover:text-black hover:bg-white hover:cursor-pointer"
-            >
-              SIGN IN
-            </Link>
           </div>
         </div>
       </div>
