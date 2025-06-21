@@ -34,23 +34,6 @@ app.use(
   })
 );
 
-// Health check endpoint
-app.get("/api/health", (req, res) => {
-  res.status(200).json({
-    success: true,
-    message: "Server is running",
-    timestamp: new Date().toISOString(),
-    env: {
-      hasJwtSecret: !!process.env.JWT_SECRET_KEY,
-      hasDatabaseUrl: !!process.env.DATABASE_URL,
-      hasFrontendUrl: !!process.env.FRONTEND_URL,
-      hasCookieExpire: !!process.env.COOKIE_EXPIRE,
-      hasSmtpHost: !!process.env.SMTP_HOST,
-      nodeEnv: process.env.NODE_ENV,
-    },
-  });
-});
-
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/books/", bookRouter);
 app.use("/api/v1/borrow", borrowRouter);

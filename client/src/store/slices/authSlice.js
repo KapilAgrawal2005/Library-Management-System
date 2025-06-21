@@ -182,10 +182,6 @@ export const otpVerification = (email, otp) => async (dispatch) => {
       }
     )
     .then((res) => {
-      // Store token in localStorage for Authorization header
-      if (res.data.token) {
-        localStorage.setItem("token", res.data.token);
-      }
       dispatch(authSlice.actions.otpVerificationSuccess(res.data));
     })
     .catch((error) => {
@@ -205,10 +201,6 @@ export const login = (data) => async (dispatch) => {
       },
     })
     .then((res) => {
-      // Store token in localStorage for Authorization header
-      if (res.data.token) {
-        localStorage.setItem("token", res.data.token);
-      }
       dispatch(authSlice.actions.loginSuccess(res.data));
     })
     .catch((error) => {
@@ -222,13 +214,9 @@ export const logout = () => async (dispatch) => {
     const response = await axios.get(`${serverUrl}/api/v1/auth/logout`, {
       withCredentials: true,
     });
-    // Remove token from localStorage
-    localStorage.removeItem("token");
     dispatch(authSlice.actions.logoutSuccess(response.data.message));
     dispatch(authSlice.actions.resetAuthSlice());
   } catch (error) {
-    // Remove token from localStorage even if logout request fails
-    localStorage.removeItem("token");
     dispatch(
       authSlice.actions.logoutFailed(
         error.response?.data?.message || "Logout failed"
@@ -284,10 +272,6 @@ export const resetPassword = (data, token) => async (dispatch) => {
       },
     })
     .then((res) => {
-      // Store token in localStorage for Authorization header
-      if (res.data.token) {
-        localStorage.setItem("token", res.data.token);
-      }
       dispatch(authSlice.actions.resetPasswordSuccess(res.data));
     })
     .catch((error) => {

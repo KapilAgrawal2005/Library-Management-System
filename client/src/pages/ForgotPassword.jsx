@@ -16,6 +16,8 @@ const ForgotPassword = () => {
 
   const handleForgotPassword = (e) => {
     e.preventDefault();
+    const data = new FormData();
+    data.append("email", email);
     dispatch(forgotPassword(email));
   };
 

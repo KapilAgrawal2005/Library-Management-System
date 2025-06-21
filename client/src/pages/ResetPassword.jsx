@@ -18,10 +18,9 @@ const ResetPassword = () => {
 
   const handleResetPassword = (e) => {
     e.preventDefault();
-    const data = {
-      password,
-      confirmPassword,
-    };
+    const data = new FormData();
+    data.append("password", password);
+    data.append("confirmPassword", confirmPassword);
     dispatch(resetPassword(data, token));
   };
 

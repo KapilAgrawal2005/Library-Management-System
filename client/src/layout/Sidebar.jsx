@@ -42,19 +42,8 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen, setSelectedComponent }) => {
     if (message) {
       toast.success(message);
       dispatch(resetAuthSlice());
-      // Navigate to home page after successful logout
-      if (message.includes("logged out")) {
-        navigate("/");
-      }
     }
-  }, [dispatch, isAuthenticated, loading, error, message, navigate]);
-
-  // Additional effect to handle authentication state changes
-  useEffect(() => {
-    if (!isAuthenticated && !loading) {
-      navigate("/");
-    }
-  }, [isAuthenticated, loading, navigate]);
+  }, [dispatch, isAuthenticated, loading, error, message]);
 
   return (
     <div>

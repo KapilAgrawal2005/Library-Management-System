@@ -13,13 +13,12 @@ import logo_with_title from "../assets/logo-with-title.png";
 
 const Home = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
-  const [selectedComponent, setSelectedComponent] = useState("Dashboard");
+  const [selectedComponent, setSelectedComponent] = useState(false);
 
-  const { user, isAuthenticated, loading } = useSelector((state) => state.auth);
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
 
   // Show public landing page for unauthenticated users
-  // Don't show anything while loading to prevent flash
-  if (!loading && !isAuthenticated) {
+  if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white">
         {/* Navigation Header */}
@@ -113,18 +112,6 @@ const Home = () => {
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Show loading state while checking authentication
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading...</p>
         </div>
       </div>
     );
