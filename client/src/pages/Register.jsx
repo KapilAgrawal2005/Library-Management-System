@@ -46,7 +46,7 @@ const Register = () => {
     <>
       <div className="flex flex-col justify-center md:flex-row h-screen">
         {/* left side - Promotional Content */}
-        <div className="hidden w-full md:w-1/2 bg-black text-white md:flex flex-col items-center justify-center p-8 rounded-tl-[80px] rounded-bl-[80px]">
+        <div className="hidden w-full md:w-1/2 bg-black text-white md:flex flex-col items-center justify-center p-8 rounded-tr-[80px] rounded-br-[80px]">
           <div className="text-center h-[400px]">
             <div className="flex justify-center mb-12">
               <img
@@ -70,7 +70,7 @@ const Register = () => {
         {/* right side - Form */}
         <div className="w-full md:w-1/2 flex items-center justify-center bg-white p-8 relative">
           <div className="max-w-sm w-full">
-            <div className="flex justify-center mb-12">
+            <div className="flex justify-center mb-10">
               <div className="rounded-full flex items-center justify-center">
                 <img src={logo} alt="logo" className="h-24 w-auto" />
               </div>
