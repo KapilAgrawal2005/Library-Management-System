@@ -11,10 +11,6 @@ const sendToken = (user, message, res) => {
     sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
   };
 
-  console.log("Setting cookie with options:", cookieOptions);
-  console.log("Token generated for user:", user.email);
-  console.log("Environment:", process.env.NODE_ENV);
-
   res.status(200).cookie("token", token, cookieOptions).json({
     success: true,
     user,

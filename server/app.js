@@ -34,18 +34,6 @@ app.use(
   })
 );
 
-// Test endpoint for debugging
-app.get("/api/v1/test", (req, res) => {
-  res.json({
-    success: true,
-    environment: process.env.NODE_ENV,
-    frontendUrl: process.env.FRONTEND_URL,
-    cookieExpire: process.env.COOKIE_EXPIRE,
-    hasJwtSecret: !!process.env.JWT_SECRET_KEY,
-    cookies: req.cookies,
-  });
-});
-
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/books/", bookRouter);
 app.use("/api/v1/borrow", borrowRouter);

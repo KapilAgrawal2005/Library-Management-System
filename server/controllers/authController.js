@@ -107,7 +107,6 @@ const verifyOTP = catchAsyncErrors(async (req, res, next) => {
 
 const login = catchAsyncErrors(async (req, res, next) => {
   const { email, password } = req.body;
-  console.log("Login attempt for email:", email);
 
   if (!email || !password) {
     return next(new ErrorHandler("All fields are required.", 400));
@@ -118,21 +117,17 @@ const login = catchAsyncErrors(async (req, res, next) => {
     );
 
     if (!user) {
-      console.log("User not found or not verified:", email);
       return next(new ErrorHandler("User doesn't exist.", 400));
     }
 
     const isPasswordMatched = await bcrypt.compare(password, user.password);
 
     if (!isPasswordMatched) {
-      console.log("Password mismatch for user:", email);
       return next(new ErrorHandler("Password is incorrect", 400));
     }
 
-    console.log("Login successful for user:", email);
     sendToken(user, "User logged in successfully.", res);
   } catch (error) {
-    console.log("Login error:", error);
     return next(new ErrorHandler("Internal server error.", 500));
   }
 });

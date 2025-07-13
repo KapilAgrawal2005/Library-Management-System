@@ -18,19 +18,30 @@ import {
 
 const App = () => {
   const dispatch = useDispatch();
-  const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const { isAuthenticated, user, loading } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    dispatch(getUser());
-    dispatch(fetchAllBooks());
-    if (isAuthenticated && user?.role === "Admin") {
-      dispatch(fetchAllUsers());
-      dispatch(fetchAllBorrowedBooks());
+    // Only try to get user if we're not already loading and not explicitly logged out
+    if (!loading) {
+      dispatch(getUser());
     }
-    if (isAuthenticated && user?.role === "User") {
-      dispatch(fetchUserBorrowedBooks());
+  }, [dispatch]);
+
+  useEffect(() => {
+    // Only fetch data if user is authenticated
+    if (isAuthenticated && user) {
+      dispatch(fetchAllBooks());
+
+      if (user.role === "Admin") {
+        dispatch(fetchAllUsers());
+        dispatch(fetchAllBorrowedBooks());
+      }
+
+      if (user.role === "User") {
+        dispatch(fetchUserBorrowedBooks());
+      }
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, user, dispatch]);
 
   return (
     <Router>

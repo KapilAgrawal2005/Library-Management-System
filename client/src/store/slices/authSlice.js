@@ -70,6 +70,7 @@ const authSlice = createSlice({
       state.message = action.payload;
       state.isAuthenticated = false;
       state.user = null;
+      state.error = null;
     },
     logoutFailed(state, action) {
       state.loading = false;
@@ -211,17 +212,26 @@ export const login = (data) => async (dispatch) => {
 export const logout = () => async (dispatch) => {
   dispatch(authSlice.actions.logoutRequest());
   try {
-    const response = await axios.get(`${serverUrl}/api/v1/auth/logout`, {
+    await axios.get(`${serverUrl}/api/v1/auth/logout`, {
       withCredentials: true,
     });
-    dispatch(authSlice.actions.logoutSuccess(response.data.message));
-    dispatch(authSlice.actions.resetAuthSlice());
+
+    // Clear authentication state immediately
+    dispatch(authSlice.actions.logoutSuccess("User logged out successfully"));
+
+    // Force redirect to home page to prevent re-authentication
+    setTimeout(() => {
+      window.location.href = "/";
+    }, 100);
   } catch (error) {
-    dispatch(
-      authSlice.actions.logoutFailed(
-        error.response?.data?.message || "Logout failed"
-      )
-    );
+    console.error("Logout error:", error);
+    // Even if logout fails on server, clear local state
+    dispatch(authSlice.actions.logoutSuccess("User logged out successfully"));
+
+    // Force redirect to home page
+    setTimeout(() => {
+      window.location.href = "/";
+    }, 100);
   }
 };
 

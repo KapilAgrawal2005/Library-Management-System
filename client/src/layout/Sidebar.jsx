@@ -39,7 +39,8 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen, setSelectedComponent }) => {
       toast.error(error);
       dispatch(resetAuthSlice());
     }
-    if (message) {
+    // Don't reset auth slice for logout success message
+    if (message && !message.includes("logged out")) {
       toast.success(message);
       dispatch(resetAuthSlice());
     }
