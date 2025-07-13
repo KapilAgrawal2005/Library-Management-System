@@ -140,6 +140,12 @@ const logout = catchAsyncErrors(async (req, res, next) => {
     sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
   };
 
+  // Clear cookie with multiple strategies
+  res.clearCookie("token");
+  res.clearCookie("token", { path: "/" });
+  res.clearCookie("token", { path: "/", domain: ".vercel.app" });
+  res.clearCookie("token", cookieOptions);
+
   res.status(200).cookie("token", "", cookieOptions).json({
     success: true,
     message: "User logged out successfully",

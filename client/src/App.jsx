@@ -21,6 +21,12 @@ const App = () => {
   const { isAuthenticated, user } = useSelector((state) => state.auth);
 
   useEffect(() => {
+    // Check if user is logging out, if so don't try to authenticate
+    if (localStorage.getItem("isLoggingOut") === "true") {
+      localStorage.removeItem("isLoggingOut");
+      return;
+    }
+
     // Check authentication status on app load
     dispatch(getUser());
   }, [dispatch]);

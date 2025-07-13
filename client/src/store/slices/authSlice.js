@@ -224,6 +224,9 @@ export const logout = () => async (dispatch) => {
   // Clear state immediately to prevent any re-authentication
   dispatch(authSlice.actions.clearAuthState());
 
+  // Set a flag in localStorage to prevent re-authentication
+  localStorage.setItem("isLoggingOut", "true");
+
   try {
     // Call logout API to clear server-side session
     await axios.get(`${serverUrl}/api/v1/auth/logout`, {
@@ -234,11 +237,27 @@ export const logout = () => async (dispatch) => {
     // Continue with logout even if API fails
   }
 
-  // Force a complete page reload to clear all state
-  window.location.href = "/";
+  // Clear all possible cookies manually
+  document.cookie =
+    "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.vercel.app;";
+  document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  document.cookie =
+    "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; secure; samesite=none;";
+
+  // Clear localStorage flag after a short delay and redirect
+  setTimeout(() => {
+    localStorage.removeItem("isLoggingOut");
+    window.location.href = "/";
+  }, 100);
 };
 
 export const getUser = () => async (dispatch) => {
+  // Check if user is in the process of logging out
+  if (localStorage.getItem("isLoggingOut") === "true") {
+    dispatch(authSlice.actions.getUserFailed());
+    return;
+  }
+
   dispatch(authSlice.actions.getUserRequest());
   try {
     const response = await axios.get(`${serverUrl}/api/v1/auth/me`, {

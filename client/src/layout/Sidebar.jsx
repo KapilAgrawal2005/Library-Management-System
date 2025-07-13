@@ -31,6 +31,17 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen, setSelectedComponent }) => {
   );
 
   const handleLogout = () => {
+    // Set logout flag immediately
+    localStorage.setItem("isLoggingOut", "true");
+
+    // Clear all possible cookies immediately
+    document.cookie =
+      "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.vercel.app;";
+    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie =
+      "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; secure; samesite=none;";
+
+    // Dispatch logout action
     dispatch(logout());
   };
 
