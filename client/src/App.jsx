@@ -18,17 +18,15 @@ import {
 
 const App = () => {
   const dispatch = useDispatch();
-  const { isAuthenticated, user, loading } = useSelector((state) => state.auth);
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    // Only try to get user if we're not already loading and not explicitly logged out
-    if (!loading) {
-      dispatch(getUser());
-    }
+    // Check authentication status on app load
+    dispatch(getUser());
   }, [dispatch]);
 
   useEffect(() => {
-    // Only fetch data if user is authenticated
+    // Only fetch data if user is authenticated and user object exists
     if (isAuthenticated && user) {
       dispatch(fetchAllBooks());
 

@@ -142,14 +142,25 @@ const authSlice = createSlice({
       state.loading = false;
       state.error = null;
       state.message = null;
-      state.user = state.user;
-      state.isAuthenticated = state.isAuthenticated;
+      // Don't reset user and isAuthenticated unless explicitly logging out
+    },
+
+    clearAuthState(state) {
+      state.loading = false;
+      state.error = null;
+      state.message = null;
+      state.user = null;
+      state.isAuthenticated = false;
     },
   },
 });
 
 export const resetAuthSlice = () => (dispatch) => {
   dispatch(authSlice.actions.resetAuthSlice());
+};
+
+export const clearAuthState = () => (dispatch) => {
+  dispatch(authSlice.actions.clearAuthState());
 };
 
 export const register = (data) => async (dispatch) => {
@@ -210,43 +221,34 @@ export const login = (data) => async (dispatch) => {
 };
 
 export const logout = () => async (dispatch) => {
-  dispatch(authSlice.actions.logoutRequest());
+  // Clear state immediately to prevent any re-authentication
+  dispatch(authSlice.actions.clearAuthState());
+
   try {
+    // Call logout API to clear server-side session
     await axios.get(`${serverUrl}/api/v1/auth/logout`, {
       withCredentials: true,
     });
-
-    // Clear authentication state immediately
-    dispatch(authSlice.actions.logoutSuccess("User logged out successfully"));
-
-    // Force redirect to home page to prevent re-authentication
-    setTimeout(() => {
-      window.location.href = "/";
-    }, 100);
   } catch (error) {
-    console.error("Logout error:", error);
-    // Even if logout fails on server, clear local state
-    dispatch(authSlice.actions.logoutSuccess("User logged out successfully"));
-
-    // Force redirect to home page
-    setTimeout(() => {
-      window.location.href = "/";
-    }, 100);
+    console.error("Logout API error:", error);
+    // Continue with logout even if API fails
   }
+
+  // Force a complete page reload to clear all state
+  window.location.href = "/";
 };
 
 export const getUser = () => async (dispatch) => {
   dispatch(authSlice.actions.getUserRequest());
-  await axios
-    .get(`${serverUrl}/api/v1/auth/me`, {
+  try {
+    const response = await axios.get(`${serverUrl}/api/v1/auth/me`, {
       withCredentials: true,
-    })
-    .then((res) => {
-      dispatch(authSlice.actions.getUserSuccess(res.data));
-    })
-    .catch((error) => {
-      dispatch(authSlice.actions.getUserFailed(error.response.data.message));
     });
+    dispatch(authSlice.actions.getUserSuccess(response.data));
+  } catch (error) {
+    // If user is not authenticated, clear the state
+    dispatch(authSlice.actions.getUserFailed());
+  }
 };
 
 export const forgotPassword = (email) => async (dispatch) => {
