@@ -16,22 +16,23 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    const data = new FormData();
-    data.append("email", email);
-    data.append("password", password);
+    const data = {
+      email,
+      password,
+    };
     dispatch(login(data));
   };
 
   useEffect(() => {
-    // if (message) {
-    //   toast.success(message);
-    //   dispatch(resetAuthSlice());
-    // }
+    if (message) {
+      toast.success(message);
+      dispatch(resetAuthSlice());
+    }
     if (error) {
       toast.error(error);
       dispatch(resetAuthSlice());
     }
-  }, [dispatch, isAuthenticated, error, loading]);
+  }, [dispatch, isAuthenticated, error, loading, message]);
 
   if (isAuthenticated) {
     return <Navigate to={"/"} />;
